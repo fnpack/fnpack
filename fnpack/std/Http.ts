@@ -1,4 +1,4 @@
-import { SyncEventStream } from "./fnpack.ts"
+import { SyncEventStream } from "../syncEventStream.ts";
 
 export class Http extends SyncEventStream {
 
@@ -14,7 +14,7 @@ export class Http extends SyncEventStream {
     }
 }
 
-interface HttpFilter {
+export interface HttpFilter {
     method: 'get'|'put'|'post'|'delete',
     path: String
 }

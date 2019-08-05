@@ -1,7 +1,7 @@
-import { scope } from "./fnpack.ts";
-import { file } from "./loaders.ts";
-import { Http } from "./Http.ts";
+import { file } from "./fnpack/loaders/file.ts";
+import { Http } from "./fnpack/std/Http.ts";
 
-export const bundle = scope([
-    Http.get('/').serve(file('./index.html'))
-]);
+export const bundle = [
+    Http.get('/').serve(file('./index.html')),
+    Http.get('/hw').serve("Hello world!")
+];
