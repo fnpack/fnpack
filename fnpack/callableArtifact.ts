@@ -1,3 +1,4 @@
-export interface CallableArtifact {
-    name: string
+export interface CallableArtifact<Input, Output> {
+    name: string,
+    runtime: 'js'
 };

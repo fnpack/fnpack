@@ -8,8 +8,8 @@ export interface scope {
 }
 
 export interface Member {
-    stream: AsyncEventStream|SyncEventStream,
-    artifact: FileArtifact|CallableArtifact,
+    stream: AsyncEventStream|SyncEventStream<any, any>,
+    artifact: FileArtifact|CallableArtifact<number, any>,
     name: string
 }
 

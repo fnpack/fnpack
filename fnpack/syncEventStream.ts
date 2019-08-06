@@ -2,11 +2,12 @@ import { CallableArtifact } from './callableArtifact.ts'
 import { FileArtifact } from './fileArtifact.ts'
 import { Member } from './fnpack.ts'
 import { nameHash } from '../util/hashing.ts'
+import { ServerlessFrameworkComponent } from './serverlessFramework/ServerlessFrameworkComponent.ts'
 
-export abstract class SyncEventStream {
-    public call (artifact: CallableArtifact|Function): Member {
-        const a: CallableArtifact = typeof artifact === 'function'
-            ? createCallable(artifact)
+export abstract class SyncEventStream<Input, Output> extends ServerlessFrameworkComponent {
+    public call (artifact: CallableArtifact<Input, Output>|Function): Member {
+        const a: CallableArtifact<Input, Output> = typeof artifact === 'function'
+            ? this.createCallable(artifact)
             : artifact;
         return {
             stream: this,
@@ -25,6 +26,10 @@ export abstract class SyncEventStream {
             name: a.name
         };
     }
+
+    protected createCallable (fn: Function): CallableArtifact<Input, Output> {
+        throw new Error('Inline lambdas not supported yet.');
+    }
 }
 
 function createFileFromText (text: string): FileArtifact {
@@ -42,6 +47,4 @@ function createFileFromText (text: string): FileArtifact {
     }
 }
 
-function createCallable (fn: Function): CallableArtifact {
-    throw new Error('Inline lambdas not supported yet.');
-}
+
