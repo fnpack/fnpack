@@ -43,9 +43,7 @@ export class Constant implements Callable {
 }
 
 export class Lambda implements Callable, CodeCallable {
-    constructor (private lambda: Function) {}
-    
-    isMiddleware: boolean = false;
+    constructor (private lambda: Function, public isMiddleware: boolean = false) {}
     runtime: string = 'js';
     // getBuffer(scope: any): Promise<Deno.Buffer> {
     //     //todo: create a buffer that calls this.lambda

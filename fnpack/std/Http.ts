@@ -13,7 +13,7 @@ export class Http extends SyncEventStream {
     }
 
     protected getReceptionChain (): SyncCallChain {
-        return new SyncCallChain([new Lambda(req => req.path)])
+        return new SyncCallChain([new Lambda((req, next) => next({ method: req.method, path: req.path}), true)])
     }
 
     private filter: HttpFilter;
