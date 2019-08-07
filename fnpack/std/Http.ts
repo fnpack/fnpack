@@ -1,5 +1,5 @@
-import { SyncEventStream } from "../syncEventStream.ts";
-import { SyncCallChain, Lambda } from '../callChain.ts';
+import { SyncEventStream } from "../syncEventStream";
+import { SyncCallChain, Lambda } from '../callChain';
 
 export interface HttpFilter {
     method: 'get'|'put'|'post'|'delete',

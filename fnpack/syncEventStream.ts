@@ -1,6 +1,6 @@
-import { CallableFile, Lambda, Constant, StaticFile, SyncCallChain } from './callChain.ts'
-import { Member } from './fnpack.ts'
-import { ServerlessFrameworkComponent } from './serverlessFramework/ServerlessFrameworkComponent.ts'
+import { CallableFile, Lambda, Constant, StaticFile, SyncCallChain } from './callChain'
+import { Member } from './fnpack'
+import { ServerlessFrameworkComponent } from './serverlessFramework/ServerlessFrameworkComponent'
 
 export abstract class SyncEventStream extends ServerlessFrameworkComponent {
     public call (callable: CallableFile|Function): Member {

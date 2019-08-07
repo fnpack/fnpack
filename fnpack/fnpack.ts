@@ -1,5 +1,5 @@
-import { EventStream } from './eventStream.ts';
-import { CallChain } from './callChain.ts';
+import { EventStream } from './eventStream';
+import { CallChain } from './callChain';
 
 export interface scope {
     members: Member[];

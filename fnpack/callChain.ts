@@ -1,9 +1,7 @@
-import * as denoPath from "https://deno.land/std/fs/path.ts";
-
 export interface Callable {
     //todo: generics / argument types
-    getBuffer: (scopeInformation: any) => Promise<Deno.Buffer>;
-    declarationInformation?: any;
+    // getBuffer: (scopeInformation: any) => Promise<Deno.Buffer>;
+    // declarationInformation?: any;
 }
 
 export interface CodeCallable {
@@ -18,14 +16,14 @@ export interface FileDeclarationInformation {
 export class StaticFile implements Callable {
     public declarationInformation: FileDeclarationInformation;
     constructor(private path: string) {
-        this.declarationInformation = {
-            ext: denoPath.extname(path)
-        }
+        // this.declarationInformation = {
+        //     ext: denoPath.extname(path)
+        // }
     }
-    getBuffer(): Promise<Deno.Buffer> {
-        throw new Error('cant open files yet')
-        // return Deno.open(this.path);
-    }
+    // getBuffer(): Promise<Deno.Buffer> {
+    //     throw new Error('cant open files yet')
+    //     // return Deno.open(this.path);
+    // }
 }
 
 export class Constant implements Callable {
@@ -35,13 +33,13 @@ export class Constant implements Callable {
             ext: '.txt'
         }
     }
-    async getBuffer(): Promise<Deno.Buffer> {
-        const encoder = new TextEncoder();
-        const data = await encoder.encode(this.value);
-        const b = new Deno.Buffer();
-        await b.write(data);
-        return b;
-    }
+    // async getBuffer(): Promise<Deno.Buffer> {
+    //     const encoder = new TextEncoder();
+    //     const data = await encoder.encode(this.value);
+    //     const b = new Deno.Buffer();
+    //     await b.write(data);
+    //     return b;
+    // }
 }
 
 export class Lambda implements Callable, CodeCallable {
@@ -49,10 +47,10 @@ export class Lambda implements Callable, CodeCallable {
     
     isMiddleware: boolean = false;
     runtime: string = 'js';
-    getBuffer(scope: any): Promise<Deno.Buffer> {
-        //todo: create a buffer that calls this.lambda
-        throw new Error('Inline lambdas not supported yet!');
-    }
+    // getBuffer(scope: any): Promise<Deno.Buffer> {
+    //     //todo: create a buffer that calls this.lambda
+    //     throw new Error('Inline lambdas not supported yet!');
+    // }
 }
 
 export class CallableFile implements Callable, CodeCallable {
@@ -60,9 +58,9 @@ export class CallableFile implements Callable, CodeCallable {
         private path: string,
         public runtime: string,
         public isMiddleware: boolean = false) {}
-    getBuffer(): Promise<Deno.Buffer> {
-        throw new Error('Callable files not supported yet!');
-    }
+    // getBuffer(): Promise<Deno.Buffer> {
+    //     throw new Error('Callable files not supported yet!');
+    // }
 }
 
 export interface CallChain {

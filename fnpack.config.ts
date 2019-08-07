@@ -1,6 +1,6 @@
-import { file } from "./fnpack/loaders/file.ts";
-import { js } from "./fnpack/loaders/js.ts";
-import { Http } from "./fnpack/std/Http.ts";
+import { file } from "./fnpack/loaders/file";
+import { js } from "./fnpack/loaders/js";
+import { Http } from "./fnpack/std/Http";
 
 export const bundle = [
     Http.get('/').serve(file('./index.html')),

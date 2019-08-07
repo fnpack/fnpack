@@ -1,3 +1,3 @@
-import { bundle } from "./fnpack.config.ts";
+import { bundle } from "./fnpack.config";
 
 console.log(bundle);
