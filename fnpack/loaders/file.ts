@@ -1,14 +1,5 @@
-declare const Deno: any;
+import { StaticFile } from "../callChain.ts"
 
-import { FileArtifact } from "../fileArtifact.ts"
-import * as denoPath from "https://deno.land/std/fs/path.ts";
-
-export function file (path: string): FileArtifact {
-    return {
-        get: async ():Promise<Deno.Buffer> =>  {
-            return Deno.open(path);
-        },
-        name: denoPath.basename(path),
-        extname: denoPath.extname(path)
-    };
+export function file (path: string): StaticFile {
+    return new StaticFile(path);
 }

@@ -1,26 +1,24 @@
 import { SyncEventStream } from "../syncEventStream.ts";
+import { SyncCallChain, Lambda } from '../callChain.ts';
 
-export interface HttpRequest {
-    method: string,
-    path: string,
-    body: any
+export interface HttpFilter {
+    method: 'get'|'put'|'post'|'delete',
+    path: String
 }
 
-export interface HttpResponse {
-    headers?: { [key:string]:string },
-    body?: any,
-    status?: number
-}
-
-export class Http extends SyncEventStream<HttpRequest, HttpResponse> {
+export class Http extends SyncEventStream {
     constructor(filter: HttpFilter) {
         super();
         this.filter = filter;
     }
 
+    protected getReceptionChain (): SyncCallChain {
+        return new SyncCallChain([new Lambda(req => req.path)])
+    }
+
     private filter: HttpFilter;
 
-    static get (path: String): SyncEventStream<HttpRequest, HttpResponse> {
+    static get (path: String): SyncEventStream {
         return new Http({ method: 'get', path: path });
     }
 
@@ -35,11 +33,6 @@ export class Http extends SyncEventStream<HttpRequest, HttpResponse> {
             }
         }
     }
-}
-
-export interface HttpFilter {
-    method: 'get'|'put'|'post'|'delete',
-    path: String
 }
 
 //todo: use this

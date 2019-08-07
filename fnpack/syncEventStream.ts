@@ -1,50 +1,27 @@
-import { CallableArtifact } from './callableArtifact.ts'
-import { FileArtifact } from './fileArtifact.ts'
+import { CallableFile, Lambda, Constant, StaticFile, SyncCallChain } from './callChain.ts'
 import { Member } from './fnpack.ts'
-import { nameHash } from '../util/hashing.ts'
 import { ServerlessFrameworkComponent } from './serverlessFramework/ServerlessFrameworkComponent.ts'
 
-export abstract class SyncEventStream<Input, Output> extends ServerlessFrameworkComponent {
-    public call (artifact: CallableArtifact<Input, Output>|Function): Member {
-        const a: CallableArtifact<Input, Output> = typeof artifact === 'function'
-            ? this.createCallable(artifact)
-            : artifact;
+export abstract class SyncEventStream extends ServerlessFrameworkComponent {
+    public call (callable: CallableFile|Function): Member {
+        const rightHandChain: SyncCallChain = typeof callable === 'function'
+            ? new SyncCallChain([new Lambda(callable)])
+            : new SyncCallChain([callable]);
         return {
             stream: this,
-            artifact: a,
-            name: a.name
+            chain: this.getReceptionChain().concat(rightHandChain)
         };
     }
 
-    public serve (artifact: string | FileArtifact): Member {
-        const a = typeof artifact === 'string'
-            ? createFileFromText(artifact)
-            : artifact;
+    public serve (callable: string|StaticFile): Member {
+        const rightHandChain: SyncCallChain = typeof callable === 'string'
+            ? new SyncCallChain([new Constant(callable)])
+            : new SyncCallChain([callable]);
         return {
             stream: this,
-            artifact: a,
-            name: a.name
+            chain: this.getReceptionChain().concat(rightHandChain)
         };
     }
 
-    protected createCallable (fn: Function): CallableArtifact<Input, Output> {
-        throw new Error('Inline lambdas not supported yet.');
-    }
+    protected abstract getReceptionChain(): SyncCallChain;
 }
-
-function createFileFromText (text: string): FileArtifact {
-    const name = `anonText#${nameHash(text)}`;
-    return {
-        get: async function (): Promise<Deno.Buffer> {
-            const encoder = new TextEncoder();
-            const data = await encoder.encode(text);
-            const b = new Deno.Buffer();
-            await b.write(data);
-            return b;
-        },
-        extname: '.txt',
-        name: name
-    }
-}
-
-

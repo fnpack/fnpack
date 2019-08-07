@@ -1,9 +1,5 @@
-import { CallableArtifact } from "../callableArtifact.ts";
+import { CallableFile } from "../callChain.ts";
 
-//todo
-export function js (path: string): CallableArtifact<any, any> {
-    return {
-        name: path,
-        runtime: 'js'
-    };
+export function js (path: string, isMiddleware: boolean = false): CallableFile {
+    return new CallableFile(path, 'js', isMiddleware);
 }

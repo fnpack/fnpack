@@ -1,3 +1,3 @@
 export abstract class ServerlessFrameworkComponent {
-    abstract getFragment (): Object;
+    protected abstract getFragment (): Object;
 }
