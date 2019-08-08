@@ -19,9 +19,11 @@
 
 ## Code
     - [ ] Lambdas (JS)
+        - [x] Expressable in the frontend
         - [ ] Make work in an inline TS environment
         - [ ] Injection of environment variables
     - [ ] Files
+        - [x] Expressable in the frontend
         - [ ] JS
         - [ ] PY
         - [ ] GO
@@ -46,6 +48,14 @@
         - [ ] Azure
         - [ ] GCP
         - [ ] LOCAL
+    - [ ] Import SF apps
+
+## Runtime
+    - [ ] Networking graph + resolver
+        - [ ] Call ranged code
+        - [ ] Receive ranged calls
+        - [ ] Call local code
+    - [ ] IPC bridge for non-js code packages
 
 ## std
     - [ ] Http

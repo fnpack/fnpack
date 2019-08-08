@@ -1,7 +1,5 @@
 export interface Callable {
-    //todo: generics / argument types
-    // getBuffer: (scopeInformation: any) => Promise<Deno.Buffer>;
-    // declarationInformation?: any;
+    type: string;
 }
 
 export interface CodeCallable {
@@ -14,51 +12,33 @@ export interface FileDeclarationInformation {
 }
 
 export class StaticFile implements Callable {
+    type = 'staticFile';
     public declarationInformation: FileDeclarationInformation;
-    constructor(private path: string) {
-        // this.declarationInformation = {
-        //     ext: denoPath.extname(path)
-        // }
-    }
-    // getBuffer(): Promise<Deno.Buffer> {
-    //     throw new Error('cant open files yet')
-    //     // return Deno.open(this.path);
-    // }
+    constructor(private path: string) {}
 }
 
 export class Constant implements Callable {
+    type = 'constant';
     public declarationInformation: FileDeclarationInformation;
     constructor (private value: any) {
         this.declarationInformation = {
             ext: '.txt'
         }
     }
-    // async getBuffer(): Promise<Deno.Buffer> {
-    //     const encoder = new TextEncoder();
-    //     const data = await encoder.encode(this.value);
-    //     const b = new Deno.Buffer();
-    //     await b.write(data);
-    //     return b;
-    // }
 }
 
 export class Lambda implements Callable, CodeCallable {
-    constructor (private lambda: Function, public isMiddleware: boolean = false) {}
+    type = 'lambda';
     runtime: string = 'js';
-    // getBuffer(scope: any): Promise<Deno.Buffer> {
-    //     //todo: create a buffer that calls this.lambda
-    //     throw new Error('Inline lambdas not supported yet!');
-    // }
+    constructor (public lambda: Function, public isMiddleware: boolean = false) {}
 }
 
 export class CallableFile implements Callable, CodeCallable {
+    type = 'callableFile';
     constructor (
-        private path: string,
+        public path: string,
         public runtime: string,
         public isMiddleware: boolean = false) {}
-    // getBuffer(): Promise<Deno.Buffer> {
-    //     throw new Error('Callable files not supported yet!');
-    // }
 }
 
 export interface CallChain {
