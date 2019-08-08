@@ -19,6 +19,7 @@
   "dependencies": {
     "@types/node": "^12.7.1",
     "fs-extra": "^8.1.0",
-    "webpack": "^4.39.1"
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
   }
 }

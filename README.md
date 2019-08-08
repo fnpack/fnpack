@@ -29,9 +29,11 @@
         - [ ] GO
         - [ ] JAVA
         - [ ] Injection of environment variables
+        - [ ] Custom exports
     - [ ] Packages / multi-file artifacts
         - [ ] Package using build step (webpack?)
         - [ ] Injection of environment variables
+    - [ ] Code can import/resolve other modules within scope
 
 ## Permissions
     - [ ] Scope

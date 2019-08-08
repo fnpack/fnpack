@@ -40,21 +40,24 @@ class LambdaWriter implements CallableWriter {
         const lambdaText: string = this.lambda.lambda.toString();
         const location = ensureAbsolute(`lambda#${nameHash(lambdaText)}.js`, buildDirectory);
         await writeTo('exports.default = ' + lambdaText, location);
-        return new CallableFile(location, this.lambda.runtime, this.lambda.isMiddleware);
+        return new CallableFile(location, this.lambda.runtime, 'default', this.lambda.isMiddleware);
     }
 }
 
 class ConstantWriter implements CallableWriter {
     constructor(private constant: Constant) {}
     async write (buildDirectory: string): Promise<CallableFile> {
-        return Promise.resolve(null)
+        const location = ensureAbsolute(`constant#${nameHash(this.constant.value)}.js`, buildDirectory);
+        await writeTo('exports.default = () => ' + this.constant.value, location);
+        return new CallableFile(location, '.js');
     }
 }
 
+//todo: we might not want to normalize these!
 class StaticWriter implements CallableWriter {
     constructor(private file: StaticFile) {}
     async write (buildDirectory: string): Promise<CallableFile> {
-        return Promise.resolve(null)
+        throw new Error('Static files are not implimented yet!');
     }
 }
 

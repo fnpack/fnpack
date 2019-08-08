@@ -1,3 +1,5 @@
+import { nameHash } from '../util/hashing'
+
 export interface Callable {
     type: string;
 }
@@ -20,7 +22,7 @@ export class StaticFile implements Callable {
 export class Constant implements Callable {
     type = 'constant';
     public declarationInformation: FileDeclarationInformation;
-    constructor (private value: any) {
+    constructor (public value: any) {
         this.declarationInformation = {
             ext: '.txt'
         }
@@ -35,10 +37,14 @@ export class Lambda implements Callable, CodeCallable {
 
 export class CallableFile implements Callable, CodeCallable {
     type = 'callableFile';
+    name: string;
     constructor (
         public path: string,
         public runtime: string,
-        public isMiddleware: boolean = false) {}
+        public exportName: string = 'default',
+        public isMiddleware: boolean = false) {
+            this.name = nameHash(path);
+        }
 }
 
 export interface CallChain {

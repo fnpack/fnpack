@@ -1,18 +1,20 @@
-import { $userEntry } from "$userPath";
+exports.handler = async function (event, context) {
+    //todo: errors
+    return zipChain(callChain)(event);
+}
 
-module.exports = {
-    handler: function (event, context, callback) {
-        try {
-            const maybePromise = $userEntry(event);
-            if (maybePromise !== undefined && typeof maybePromise.then === 'function') {
-                maybePromise
-                    .then(result => callback(null, result))
-                    .catch(userException => callback(userException));
-            } else {
-                callback(null, maybePromise);
-            }
-        } catch (exception) {
-            callback(exception);
+function zipChain (chain) {
+    if (chain.length < 1) {
+        return () => null;
+    }
+    const head = chain[0];
+    const rest = chain.slice(1) || [];
+    if (head.invokeAsMiddleWare) {
+        return event => {
+            return environment[head.variableName](event, zipChain(rest))
         }
     }
-};
+    return event => {
+        return zipChain(rest)(environment[head.variableName](event));
+    }
+}
