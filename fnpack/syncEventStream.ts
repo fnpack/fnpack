@@ -1,8 +1,7 @@
 import { CallableFile, Lambda, Constant, StaticFile, SyncCallChain } from './callChain'
 import { Member } from './fnpack'
-import { ServerlessFrameworkComponent } from './serverlessFramework/ServerlessFrameworkComponent'
 
-export abstract class SyncEventStream extends ServerlessFrameworkComponent {
+export abstract class SyncEventStream {
     public call (callable: CallableFile|Function): Member {
         const rightHandChain: SyncCallChain = typeof callable === 'function'
             ? new SyncCallChain([new Lambda(callable)])
@@ -24,4 +23,5 @@ export abstract class SyncEventStream extends ServerlessFrameworkComponent {
     }
 
     protected abstract getReceptionChain(): SyncCallChain;
+    abstract getFragment(): Object;
 }

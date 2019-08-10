@@ -1,3 +1,68 @@
+import { extname } from 'path';
+
 export abstract class ServerlessFrameworkComponent {
-    protected abstract getFragment (): Object;
+    abstract getFragment (): Object;
+}
+
+export class BaseComponent extends ServerlessFrameworkComponent {
+    constructor(){ super(); }
+    getFragment(): Object {
+        return {
+            provider: {
+                name: 'aws'
+            }
+        }
+    }
+}
+
+export class FunctionComponent extends ServerlessFrameworkComponent {
+    private handlerValue: string;
+    constructor(bundlePath: string, handlerName: string = 'handler') {
+        super();
+        this.handlerValue = `${bundlePath.replace(extname(bundlePath), '')}.${handlerName}`;
+    }
+
+    getFragment(): Object {
+        return {
+            'functions': {
+                '$target': {
+                    'handler': this.handlerValue
+                }
+            }
+        }
+    }
+}
+
+export function mergeComponents (
+    L: ServerlessFrameworkComponent,
+    R: ServerlessFrameworkComponent,
+    replacements: {[key:string]: string}): ServerlessFrameworkComponent {
+    const merged = mergeObjects(L.getFragment(), R.getFragment(), replacements);
+    return {
+        getFragment: function (): Object {
+            return merged
+        }
+    };
+}
+
+function mergeObjects (L: Object, R: Object, replacements: {[key:string]: string}): Object {
+    Object.keys(R)
+        .forEach(rKey => {
+            const assignKey = replacements[rKey] || rKey;
+            if (L[rKey] === undefined) {
+                L[rKey] = R[rKey];
+            } else {
+                if (typeof L[rKey] === 'object') {
+                    L[assignKey] = mergeObjects(L[rKey], R[rKey], replacements);
+                } else if (Array.isArray(L[rKey])) {
+                    L[assignKey] = L[rKey].concat(R[rKey]);
+                } else {
+                    L[assignKey] = R[rKey];
+                }
+            }
+            if (assignKey !== rKey) {
+                delete L[rKey];
+            }
+        });
+    return L;
 }

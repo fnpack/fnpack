@@ -1,5 +1,13 @@
-import { SystemGraph } from '../core/systemGraph';
+import { PackedMember } from '../core/packedMember';
+import { 
+    ServerlessFrameworkComponent,
+    mergeComponents,
+    BaseComponent } from '../fnpack/serverlessFramework/ServerlessFrameworkComponent';
 
-export const gen: (SystemGraph) => void = async (graph: SystemGraph) {
-    console.log('were in the backend');
+export function gen (members: PackedMember[]): Object {
+    const x: ServerlessFrameworkComponent = members
+    .reduce((merged: ServerlessFrameworkComponent, next: PackedMember): ServerlessFrameworkComponent => {
+        return mergeComponents(merged, next, {});
+    }, new BaseComponent());
+    return x.getFragment();
 }

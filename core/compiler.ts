@@ -4,16 +4,27 @@ import * as stdPath from 'path';
 import { CallableFile, Callable } from "../fnpack/callChain";
 import { CallableWriterFactory } from './callables/callableWriter';
 import { writeTo, read } from '../util/fileUtils';
+import { gen } from '../backend/codeGen';
+import { PackedMember } from './packedMember';
 //this is only happy if we require webpack
-const webpack = require('webpack')
+const webpack = require('webpack');
 const buildDirName = '.fnpack';
-const buildDirLocation = stdPath.resolve(process.cwd(), buildDirName);
+const globalBuildDir = stdPath.resolve(process.cwd(), buildDirName);
 const handlerPath = stdPath.resolve(__dirname, './runtime/handler.js');
 
 export async function compile (bundle: Member[]): Promise<string> {
-    await createBuildDir();
-    const first: Member = bundle[0];
-    const normalizedLinks: CallableFile[] = await Promise.all(first.chain.links.map(normalize));
+    //todo: create build dirs for each member
+    const packed = await packMember(bundle[0], globalBuildDir);
+    
+    const sfObject = gen([packed]);
+
+    return 'foo' 
+}
+
+async function packMember (member: Member, buildDirLocation: string): Promise<PackedMember> {
+    await createBuildDir(buildDirLocation);
+    const normalizedLinks: CallableFile[] = await Promise.all(member.chain.links
+        .map(link => normalize(link, buildDirLocation)));
 
     const importHead = 
         'const environment = {' +
@@ -23,11 +34,12 @@ export async function compile (bundle: Member[]): Promise<string> {
         + '\n}\n' + `const callChain = JSON.parse('${JSON.stringify(dumpChain(normalizedLinks))}')` + '\n';
 
     await writeTo(importHead + await read(handlerPath), stdPath.resolve(buildDirLocation, 'handler.js'));
-    const x = await executeWebpack(buildDirLocation);
+    
+    //at this point, we've created the executable call chain
+    //todo: do something with webpack stats
+    const webpackStats = await executeWebpack(buildDirLocation);
 
-    // console.log(x)
-
-    return 'foo'
+    return new PackedMember(member.stream, stdPath.resolve(buildDirLocation, 'handler.bundle.js'));
 }
 
 interface ChainInstruction {
@@ -44,11 +56,11 @@ function dumpChain (links: CallableFile[]): ChainInstruction[] {
     })
 }
 
-async function normalize (link: Callable): Promise<CallableFile> {
+async function normalize (link: Callable, buildDirLocation: string): Promise<CallableFile> {
     return CallableWriterFactory.get(link).write(buildDirLocation);
 }
 
-async function createBuildDir(): Promise<void> {
+async function createBuildDir(buildDirLocation: string): Promise<void> {
     if (await exists(buildDirLocation)) {
         await (remove(buildDirLocation));
     }
@@ -58,7 +70,7 @@ async function createBuildDir(): Promise<void> {
 async function executeWebpack (buildDirLocation: string): Promise<void> {
     return new Promise(function (resolve, reject) {
         webpack({
-            entry: stdPath.resolve(__dirname, '../.fnpack/handler.js'),
+            entry: stdPath.resolve(buildDirLocation, 'handler.js'),
             target: 'node',
             output: {
                 filename: 'handler.bundle.js',
