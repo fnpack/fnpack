@@ -5,5 +5,10 @@ import { Http } from "./fnpack/std/Http";
 export const bundle = [
     // Http.get('/').serve(file('./index.html')),
     // Http.get('/hw').serve("Hello world!"),
-    Http.get('/api/hw').call(js('./hw.js'))
+    // Http.get('/api/hw').call(js('./hw.js')),
+    Http.get('/api/lambda').call(() => {
+        return {
+            body: `Hello from a lambda at time ${new Date()}`
+        }
+    })
 ];

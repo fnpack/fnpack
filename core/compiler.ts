@@ -6,6 +6,7 @@ import { CallableWriterFactory } from './callables/callableWriter';
 import { writeTo, read } from '../util/fileUtils';
 import { gen } from '../backend/codeGen';
 import { PackedMember } from './packedMember';
+import { safeDump } from 'js-yaml';
 //this is only happy if we require webpack
 const webpack = require('webpack');
 const buildDirName = '.fnpack';
@@ -18,7 +19,10 @@ export async function compile (bundle: Member[]): Promise<string> {
     
     const sfObject = gen([packed]);
 
-    return 'foo' 
+    const sfString = safeDump(sfObject);
+    await writeTo(sfString, stdPath.resolve(globalBuildDir, 'serverless.yaml'));
+
+    return 'foo'
 }
 
 async function packMember (member: Member, buildDirLocation: string): Promise<PackedMember> {
@@ -38,8 +42,12 @@ async function packMember (member: Member, buildDirLocation: string): Promise<Pa
     //at this point, we've created the executable call chain
     //todo: do something with webpack stats
     const webpackStats = await executeWebpack(buildDirLocation);
+    if (webpackStats.compilation.errors.length > 0) {
+        console.log(webpackStats.compilation.errors);
+        throw new Error('Webpack failure');
+    }
 
-    return new PackedMember(member.stream, stdPath.resolve(buildDirLocation, 'handler.bundle.js'));
+    return new PackedMember(member.stream, stdPath.resolve(buildDirLocation, 'handlerBundle.js'));
 }
 
 interface ChainInstruction {
@@ -67,13 +75,13 @@ async function createBuildDir(buildDirLocation: string): Promise<void> {
     await mkdir(buildDirLocation);
 }
 
-async function executeWebpack (buildDirLocation: string): Promise<void> {
+async function executeWebpack (buildDirLocation: string): Promise<any> {
     return new Promise(function (resolve, reject) {
         webpack({
             entry: stdPath.resolve(buildDirLocation, 'handler.js'),
             target: 'node',
             output: {
-                filename: 'handler.bundle.js',
+                filename: 'handlerBundle.js',
                 path: buildDirLocation,
                 libraryTarget: 'umd'
             }

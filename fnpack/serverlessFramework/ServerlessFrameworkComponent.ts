@@ -1,4 +1,4 @@
-import { extname } from 'path';
+import { basename, extname } from 'path';
 
 export abstract class ServerlessFrameworkComponent {
     abstract getFragment (): Object;
@@ -8,6 +8,7 @@ export class BaseComponent extends ServerlessFrameworkComponent {
     constructor(){ super(); }
     getFragment(): Object {
         return {
+            service: 'testFnpack',
             provider: {
                 name: 'aws'
             }
@@ -19,7 +20,7 @@ export class FunctionComponent extends ServerlessFrameworkComponent {
     private handlerValue: string;
     constructor(bundlePath: string, handlerName: string = 'handler') {
         super();
-        this.handlerValue = `${bundlePath.replace(extname(bundlePath), '')}.${handlerName}`;
+        this.handlerValue = `${basename(bundlePath, extname(bundlePath))}.${handlerName}`;
     }
 
     getFragment(): Object {

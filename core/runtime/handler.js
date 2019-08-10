@@ -5,7 +5,7 @@ exports.handler = async function (event, context) {
 
 function zipChain (chain) {
     if (chain.length < 1) {
-        return () => null;
+        return e => e;
     }
     const head = chain[0];
     const rest = chain.slice(1) || [];

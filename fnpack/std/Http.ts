@@ -1,5 +1,7 @@
 import { SyncEventStream } from "../syncEventStream";
-import { SyncCallChain, Lambda } from '../callChain';
+import { SyncCallChain } from '../callChain';
+import { js } from '../loaders/js'
+import { resolve } from 'path'
 
 export interface HttpFilter {
     method: 'get'|'put'|'post'|'delete',
@@ -14,7 +16,7 @@ export class Http extends SyncEventStream {
 
     protected getReceptionChain (): SyncCallChain {
         return new SyncCallChain([
-            new Lambda((req, next) => next({ method: req.method, path: req.path}), true)
+            js(resolve(__dirname, './httpReception.js'), 'http', true)
         ])
     }
 
