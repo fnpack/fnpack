@@ -1,7 +1,8 @@
 import { CallableFile, Lambda, Constant, StaticFile, SyncCallChain } from './callChain'
 import { Member } from './fnpack'
+import { EventStream } from './eventStream'
 
-export abstract class SyncEventStream {
+export abstract class SyncEventStream extends EventStream {
     public call (callable: CallableFile|Function): Member {
         const rightHandChain: SyncCallChain = typeof callable === 'function'
             ? new SyncCallChain([new Lambda(callable)])

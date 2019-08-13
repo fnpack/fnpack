@@ -63,3 +63,17 @@ export class SyncCallChain implements CallChain {
         return this;
     }
 }
+
+//todo: reduce this with generics
+export class AsyncCallChain implements CallChain {
+    links: Callable[] = [];
+
+    constructor(links: Callable[]) {
+        this.links = links;
+    }
+
+    concat (rightChain: AsyncCallChain): AsyncCallChain {
+        this.links = this.links.concat(rightChain.links);
+        return this;
+    }
+}

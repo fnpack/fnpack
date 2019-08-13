@@ -34,6 +34,7 @@
         - [X] Package using build step (webpack?)
         - [ ] Injection of environment variables
     - [ ] Code can import/resolve other modules within scope
+    - [ ] Call chains in front-end
 
 ## Permissions
     - [ ] Scope
@@ -46,11 +47,14 @@
     - [ ] Collapse scope (co-locate on lambdas)
     - [X] Wrap user code in runtime bundle
     - [ ] Portable
-        - [ ] AWS
+        - [X] AWS
         - [ ] Azure
         - [ ] GCP
         - [ ] LOCAL
     - [ ] Import SF apps
+    - [ ] Multiple members
+    - [ ] Named function members
+    - [ ] Variables
 
 ## Runtime
     - [ ] Networking graph + resolver
@@ -64,4 +68,8 @@
         - [ ] content headers for Http
         - [ ] host static files on s3
         - [X] FFI
-    - [ ] Cron
+    - [X] Cron
+
+## Distribution
+    - [ ] Users can install globally
+        - [ ] ts-node works
