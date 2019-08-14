@@ -45,16 +45,21 @@
 
 ## Bundles
     - [ ] Collapse scope (co-locate on lambdas)
+    - [ ] Service name / name bundle
     - [X] Wrap user code in runtime bundle
     - [ ] Portable
+        - [ ] Allow setting in frontend
         - [X] AWS
         - [ ] Azure
         - [ ] GCP
         - [ ] LOCAL
     - [ ] Import SF apps
-    - [ ] Multiple members
+    - [X] Multiple members
     - [ ] Named function members
     - [ ] Variables
+    - [ ] Dependency injection
+    - [X] Package into zip file
+    - [ ] Executable-ish
 
 ## Runtime
     - [ ] Networking graph + resolver

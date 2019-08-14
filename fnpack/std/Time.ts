@@ -13,7 +13,7 @@ export class Time extends AsyncEventStream {
                         {
                             schedule: {
                                 rate: `cron(${this.schedule})`,
-                                enabled: false
+                                enabled: true
                             }
                         }
                     ]

@@ -1,2 +1,3 @@
 .fnpack/
 node_modules/
+*.zip

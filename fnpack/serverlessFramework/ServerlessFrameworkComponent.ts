@@ -5,12 +5,15 @@ export abstract class ServerlessFrameworkComponent {
 }
 
 export class BaseComponent extends ServerlessFrameworkComponent {
-    constructor(){ super(); }
+    constructor(private serviceName: string, private provider: string = 'aws'){ super(); }
     getFragment(): Object {
         return {
-            service: 'testFnpack',
+            service: this.serviceName,
             provider: {
-                name: 'aws'
+                name: this.provider
+            },
+            package: {
+                individually: true
             }
         }
     }
@@ -18,7 +21,7 @@ export class BaseComponent extends ServerlessFrameworkComponent {
 
 export class FunctionComponent extends ServerlessFrameworkComponent {
     private handlerValue: string;
-    constructor(bundlePath: string, handlerName: string = 'handler') {
+    constructor(private bundlePath: string, handlerName: string = 'handler') {
         super();
         this.handlerValue = `${basename(bundlePath, extname(bundlePath))}.${handlerName}`;
     }
@@ -27,7 +30,8 @@ export class FunctionComponent extends ServerlessFrameworkComponent {
         return {
             'functions': {
                 '$target': {
-                    'handler': this.handlerValue
+                    'handler': this.handlerValue,
+                    package: { artifact: basename(this.bundlePath) }
                 }
             }
         }
