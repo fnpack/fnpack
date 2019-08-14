@@ -27,6 +27,7 @@
         - [X] JS
         - [ ] PY
         - [ ] GO
+        - [ ] RUST
         - [ ] JAVA
         - [ ] Injection of environment variables
         - [ ] Custom exports
@@ -42,10 +43,11 @@
         - [ ] Nested scopes translate to networking
     - [ ] Roles
         - [ ] Scopes map to roles
+        - [ ] Role injection (connection to DB, etc.)
 
 ## Bundles
     - [ ] Collapse scope (co-locate on lambdas)
-    - [ ] Service name / name bundle
+    - [X] Service name / name bundle
     - [X] Wrap user code in runtime bundle
     - [ ] Portable
         - [ ] Allow setting in frontend
@@ -55,11 +57,14 @@
         - [ ] LOCAL
     - [ ] Import SF apps
     - [X] Multiple members
-    - [ ] Named function members
+    - [-] Named function members
     - [ ] Variables
     - [ ] Dependency injection
     - [X] Package into zip file
     - [ ] Executable-ish
+    - [ ] Include other bundles
+        - [ ] Include services
+        - [ ] Include sources
 
 ## Runtime
     - [ ] Networking graph + resolver

@@ -24,3 +24,10 @@ export async function zip (path: string, fileName: string): Promise<string> {
     return newPath;
     
 }
+
+export async function extract (path: string): Promise<string> {
+    const zip  = new Zip(path);
+    const zipName = path.replace('.zip', '/');
+    zip.extractAllTo(zipName, true);
+    return zipName;
+}
