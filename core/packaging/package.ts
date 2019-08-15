@@ -18,10 +18,10 @@ export async function packMembers (members: Member[], buildDirLocation: string):
     const normalizedMembers: string[] = await Promise.all(members.map(async member => {
         const normalizedLinks: CallableFile[] = await Promise.all(member.chain.links
             .map(link => normalize(link, buildDirLocation)));
-        const name: string = member.name
-            ? member.name
+        const name: string = member.chain.name
+            ? member.chain.name
             : generateName(member.stream, normalizedLinks);
-        member.name = name;
+        member.chain.name = name;
         
         const importHead = 
             'const environment = {' +
@@ -45,12 +45,12 @@ export async function packMembers (members: Member[], buildDirLocation: string):
 
     return Promise.all(members.map(async member => {
         const zipFilePath = await zip(
-            stdPath.resolve(buildDirLocation, `${member.name}_bundle.js`),
-            `${member.name}_bundle.zip`);
+            stdPath.resolve(buildDirLocation, `${member.chain.name}_bundle.js`),
+            `${member.chain.name}_bundle.zip`);
         return new PackedMember(
             member.stream,
             zipFilePath,
-            member.name)
+            member.chain.name)
     }));
 
 }

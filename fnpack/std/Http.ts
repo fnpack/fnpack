@@ -1,5 +1,5 @@
 import { SyncEventStream } from "../syncEventStream";
-import { SyncCallChain } from '../callChain';
+import { CallChain } from '../callChain';
 import { js } from '../loaders/js'
 import { resolve } from 'path'
 
@@ -14,10 +14,8 @@ export class Http extends SyncEventStream {
         this.filter = filter;
     }
 
-    protected getReceptionChain (): SyncCallChain {
-        return new SyncCallChain([
-            js(resolve(__dirname, './httpReception.js'), 'http', true)
-        ])
+    protected getReceptionChain (): CallChain {
+        return js(resolve(__dirname, './httpReception.js'), 'http', true);
     }
 
     private filter: HttpFilter;

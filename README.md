@@ -61,7 +61,7 @@
     - [ ] Variables
     - [ ] Dependency injection
     - [X] Package into zip file
-    - [ ] Executable-ish
+    - [X] Executable-ish
     - [ ] Include other bundles
         - [ ] Include services
         - [ ] Include sources

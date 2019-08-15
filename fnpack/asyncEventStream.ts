@@ -1,17 +1,17 @@
-import { CallableFile, Lambda, AsyncCallChain } from './callChain'
-import { Member, createMember } from './fnpack'
+import { Lambda, CallChain } from './callChain'
+import { Member } from './fnpack'
 import { EventStream } from './eventStream'
 
 export abstract class AsyncEventStream extends EventStream {
-    public call (callable: CallableFile|Function): Member {
-        const rightHandChain: AsyncCallChain = typeof callable === 'function'
-            ? new AsyncCallChain([new Lambda(callable)])
-            : new AsyncCallChain([callable]);
-        return createMember(this, this.getReceptionChain().concat(rightHandChain));
+    public call (callable: CallChain|Function): Member {
+        const rightHandChain: CallChain = typeof callable === 'function'
+            ? new CallChain([new Lambda(callable)])
+            : callable;
+        return new Member(this, this.getReceptionChain().concat(rightHandChain));
     }
 
-    protected getReceptionChain(): AsyncCallChain {
-        return new AsyncCallChain([]);
+    protected getReceptionChain(): CallChain {
+        return new CallChain([]);
     }
     abstract getFragment(): Object;
 }

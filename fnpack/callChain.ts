@@ -47,33 +47,17 @@ export class CallableFile implements Callable, CodeCallable {
         }
 }
 
-export interface CallChain {
-    links: Callable[]
-}
+export class CallChain {
+    constructor(public links: Callable[], public name: string = undefined) {}
 
-export class SyncCallChain implements CallChain {
-    links: Callable[] = [];
-
-    constructor(links: Callable[]) {
-        this.links = links;
-    }
-
-    concat (rightChain: SyncCallChain): SyncCallChain {
-        this.links = this.links.concat(rightChain.links);
+    as (name: string): CallChain {
+        this.name = name;
         return this;
     }
-}
 
-//todo: reduce this with generics
-export class AsyncCallChain implements CallChain {
-    links: Callable[] = [];
-
-    constructor(links: Callable[]) {
-        this.links = links;
-    }
-
-    concat (rightChain: AsyncCallChain): AsyncCallChain {
-        this.links = this.links.concat(rightChain.links);
+    concat (chain: CallChain): CallChain {
+        this.links = this.links.concat(chain.links);
+        this.name = chain.name;
         return this;
     }
 }

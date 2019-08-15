@@ -1,22 +1,22 @@
-import { CallableFile, Lambda, Constant, StaticFile, SyncCallChain } from './callChain'
-import { Member, createMember } from './fnpack'
+import { Lambda, Constant, StaticFile, CallChain } from './callChain'
+import { Member } from './fnpack'
 import { EventStream } from './eventStream'
 
 export abstract class SyncEventStream extends EventStream {
-    public call (callable: CallableFile|Function): Member {
-        const rightHandChain: SyncCallChain = typeof callable === 'function'
-            ? new SyncCallChain([new Lambda(callable)])
-            : new SyncCallChain([callable]);
-        return createMember(this, this.getReceptionChain().concat(rightHandChain));
+    public call (callable: CallChain|Function): Member {
+        const rightHandChain: CallChain = typeof callable === 'function'
+            ? new CallChain([new Lambda(callable)])
+            : callable;
+        return new Member(this, this.getReceptionChain().concat(rightHandChain));
     }
 
     public serve (callable: string|StaticFile): Member {
-        const rightHandChain: SyncCallChain = typeof callable === 'string'
-            ? new SyncCallChain([new Constant(callable)])
-            : new SyncCallChain([callable]);
-        return createMember(this, this.getReceptionChain().concat(rightHandChain));
+        const rightHandChain: CallChain = typeof callable === 'string'
+            ? new CallChain([new Constant(callable)])
+            : new CallChain([callable]);
+        return new Member(this, this.getReceptionChain().concat(rightHandChain));
     }
 
-    protected abstract getReceptionChain(): SyncCallChain;
+    protected abstract getReceptionChain(): CallChain;
     abstract getFragment(): Object;
 }

@@ -1,5 +1,5 @@
-import { StaticFile } from "../callChain"
+import { CallChain, StaticFile } from "../callChain"
 
-export function file (path: string): StaticFile {
-    return new StaticFile(path);
+export function file (path: string): CallChain {
+    return new CallChain([new StaticFile(path)]);
 }
