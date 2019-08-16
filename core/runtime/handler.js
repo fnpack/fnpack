@@ -1,9 +1,28 @@
 exports.handler = async function (event, context) {
     //todo: errors
-    return zipChain(callChain)(event);
+    const chain = electChain(event);
+    if (chain === undefined) {
+        throw new Error('Could not identify chain for event');
+    }
+    return zipChain(chain)(event);
 }
 
-exports.resolver = function (thing) { return thing; }
+exports.resolver = function (chainName) {
+    if (chains[chainName] !== undefined) {
+        return zipChain(chains[chainName]);
+    }
+    throw new Error(`Could not resolve call chain named ${chainName}.`)
+}
+
+function electChain (event) {
+    let targetChainName, i = 0;
+    for(; i < tests.length; i++) {
+        targetChainName = tests[i](event);
+        if (targetChainName !== undefined) {
+            return chains[targetChainName];
+        }
+    }
+}
 
 function zipChain (chain) {
     if (chain.length < 1) {

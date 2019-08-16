@@ -23,22 +23,22 @@ import { Time } from './fnpack/std/Time'
 //     ]
 // };
 
-// const id = fn(x => x).as('identity')
-
-// export const bundle: ServiceBundle = {
-//     name: 'joined',
-//     members: [
-//         Http.get('/').call(id),
-//         Http.get('/constant').call(() => 'blah')
-//     ]
-// }
+const id = fn(x => x).as('identity')
 
 export const bundle: ServiceBundle = {
     name: 'resolver',
     members: [
-        Web.get('/').call(js('./test1.js'))
+        Http.get('/').call(id),
+        Http.get('/constant').call(() => 'blah')
     ]
 }
+
+// export const bundle: ServiceBundle = {
+//     name: 'resolver',
+//     members: [
+//         Web.get('/').call(js('./test1.js'))
+//     ]
+// }
 
 // export const bundle: ServiceBundle = {
 //     name: 'resolver',

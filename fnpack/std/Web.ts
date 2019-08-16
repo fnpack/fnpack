@@ -1,15 +1,15 @@
-import { SyncEventStream } from '../syncEventStream'
+import { HttpFilter } from './Http'
 import { Http } from './Http'
 import { CallChain } from '../callChain'
 import { fn } from '../loaders/fn'
 
-export class Web extends SyncEventStream {
-    constructor(private http: Http) {
-        super();
+export class Web extends Http {
+    constructor(filter: HttpFilter) {
+        super(filter);
     }
 
     getReceptionChain(): CallChain {
-        return this.http.getReceptionChain().concat(fn(async (req, next) => {
+        return super.getReceptionChain().concat(fn(async (req, next) => {
             try {
                 const res = await next(req.body);
                 return {
@@ -26,10 +26,6 @@ export class Web extends SyncEventStream {
     }
 
     static get(path: string): Web {
-        return new Web(Http.get(path));
-    }
-
-    getFragment() {
-        return this.http.getFragment();
+        return new Web(Http.get(path).filter);
     }
 }

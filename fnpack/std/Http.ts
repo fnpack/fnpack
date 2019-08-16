@@ -1,4 +1,5 @@
 import { SyncEventStream } from "../syncEventStream";
+import { Colocatable } from '../eventStream'
 import { CallChain } from '../callChain';
 import { js } from '../loaders/js'
 import { resolve } from 'path'
@@ -8,17 +9,22 @@ export interface HttpFilter {
     path: String
 }
 
-export class Http extends SyncEventStream {
-    constructor(filter: HttpFilter) {
+export class Http extends SyncEventStream implements Colocatable {
+    constructor(public filter: HttpFilter) {
         super();
-        this.filter = filter;
+    }
+
+    colocationTest = {
+        test: (event: any, config: any): boolean => {
+            return event.method === config.method
+                && event.path === config.path
+        },
+        getConfig: (): any => this.filter
     }
 
     getReceptionChain (): CallChain {
         return js(resolve(__dirname, './httpReception.js'), 'http', true);
     }
-
-    private filter: HttpFilter;
 
     static get (path: String): Http {
         return new Http({ method: 'get', path: path });
