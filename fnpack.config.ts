@@ -3,6 +3,7 @@ import { js } from "./fnpack/loaders/js";
 import { fn } from './fnpack/loaders/fn';
 import { ServiceBundle } from './fnpack/fnpack';
 import { Http } from "./fnpack/std/Http";
+import { Web } from "./fnpack/std/Web";
 import { Time } from './fnpack/std/Time'
 
 
@@ -22,16 +23,28 @@ import { Time } from './fnpack/std/Time'
 //     ]
 // };
 
-const id = fn(x => x).as('identity')
+// const id = fn(x => x).as('identity')
+
+// export const bundle: ServiceBundle = {
+//     name: 'joined',
+//     members: [
+//         Http.get('/').call(id),
+//         Http.get('/constant').call(() => 'blah')
+//     ]
+// }
 
 export const bundle: ServiceBundle = {
-    name: 'joined',
+    name: 'resolver',
     members: [
-        Http.get('/').call(id),
-        Http.get('/constant').call(() => 'blah')
+        Web.get('/').call(js('./test1.js'))
     ]
 }
 
-
-
-
+// export const bundle: ServiceBundle = {
+//     name: 'resolver',
+//     members: [
+//         Web.get('/').call(fn(async () => {
+//             return 'foo'
+//         }))
+//     ]
+// }

@@ -3,8 +3,9 @@
         "module": "commonjs",
         "removeComments": true,
         "preserveConstEnums": true,
-        "sourceMap": true,
-        "lib": [ "es2015" ],
+        "sourceMap": false,
+        "target": "es2017",
+        "lib": [ "es7" ],
         "types" : ["node"]
     }
 }

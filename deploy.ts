@@ -1,8 +1,8 @@
-import { execute } from './backend/executeBundle';
+import { executeLocal } from './backend/executeBundle';
 import { resolve } from 'path';
 
 async function x () {
-    await execute(resolve(__dirname, './joined.zip'));
+    await executeLocal(resolve(__dirname, './resolver.zip'));
 }
 
 x();

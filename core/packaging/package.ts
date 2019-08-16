@@ -38,9 +38,10 @@ export async function packMembers (members: Member[], buildDirLocation: string):
     }));
 
     const webpackStats = await executeWebpack(normalizedMembers, buildDirLocation);
-    if (webpackStats.compilation.errors.length > 0) {
-        console.log(webpackStats.compilation.errors);
-        throw new Error('Webpack failure');
+    const erroredBuilds = webpackStats.filter(stat => stat.compilation.errors.length > 0);
+    if (erroredBuilds.length > 0) {
+        console.log(erroredBuilds.map(stat => stat.compilation.errors));
+        throw new Error('Webpack failures');
     }
 
     return Promise.all(members.map(async member => {
@@ -88,25 +89,28 @@ async function createBuildDir(buildDirLocation: string): Promise<void> {
     await mkdir(buildDirLocation);
 }
 
-async function executeWebpack (normalizedMembers: string[], buildDirLocation: string): Promise<any> {
-    const entries = normalizedMembers
-        .reduce((entries, memberName) => {
-            entries[memberName] = stdPath.resolve(buildDirLocation, `${memberName}_handler.js`)
-            return entries;
-        }, {});
-
-    return new Promise(function (resolve, reject) {
-        webpack({
-            entry: entries,
-            target: 'node',
-            output: {
-                filename: '[name]_bundle.js',
-                path: buildDirLocation,
-                libraryTarget: 'umd'
-            }
-        }).run((err, stats) => {
-            if (err) reject(err);
-            resolve(stats);
-        });
-    });
+async function executeWebpack (normalizedMembers: string[], buildDirLocation: string): Promise<any[]> {
+    return Promise.all(normalizedMembers.map(async memberName => {
+        const handler = stdPath.resolve(buildDirLocation, `${memberName}_handler.js`);
+        return new Promise(function(resolve, reject) {
+            webpack({
+                entry: handler,
+                target: 'node',
+                output: {
+                    filename: `${memberName}_bundle.js`,
+                    path: buildDirLocation,
+                    libraryTarget: 'umd'
+                },
+                plugins: [
+                    new webpack.NormalModuleReplacementPlugin(
+                        /^fnpack$/,
+                        handler
+                      )
+                ]
+            }).run((err, stats) => {
+                if (err) reject(err);
+                resolve(stats);
+            });
+        })
+    }));
 }

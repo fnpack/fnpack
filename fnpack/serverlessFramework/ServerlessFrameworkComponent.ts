@@ -10,11 +10,15 @@ export class BaseComponent extends ServerlessFrameworkComponent {
         return {
             service: this.serviceName,
             provider: {
-                name: this.provider
+                name: this.provider,
+                runtime: 'nodejs10.x'
             },
             package: {
                 individually: true
-            }
+            },
+            plugins: [
+                'serverless-offline'
+            ]
         }
     }
 }

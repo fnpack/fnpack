@@ -54,7 +54,7 @@
         - [X] AWS
         - [ ] Azure
         - [ ] GCP
-        - [ ] LOCAL
+        - [X] LOCAL
     - [ ] Import SF apps
     - [X] Multiple members
     - [-] Named function members

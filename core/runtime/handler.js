@@ -3,6 +3,8 @@ exports.handler = async function (event, context) {
     return zipChain(callChain)(event);
 }
 
+exports.resolver = function (thing) { return thing; }
+
 function zipChain (chain) {
     if (chain.length < 1) {
         return e => e;

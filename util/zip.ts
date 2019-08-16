@@ -1,6 +1,6 @@
 import * as Zip from 'adm-zip'
-import { resolve } from 'path'
-import { lstat, readdir } from 'fs-extra'
+import { resolve, basename, dirname } from 'path'
+import { lstat, readdir, remove } from 'fs-extra'
 
 //Note: if argument is a directory it will NOT include child directories!
 //this method is janky and lazy as hell--don't use it
@@ -28,6 +28,14 @@ export async function zip (path: string, fileName: string): Promise<string> {
 export async function extract (path: string): Promise<string> {
     const zip  = new Zip(path);
     const zipName = path.replace('.zip', '/');
+    await remove(zipName)
     zip.extractAllTo(zipName, true);
+    return zipName;
+}
+
+export async function extractBundle (path: string): Promise<string> {
+    const zip  = new Zip(path);
+    const zipName = path.replace('.zip', '.js');
+    zip.extractEntryTo(basename(path).replace('.zip', '.js'), dirname(zipName));
     return zipName;
 }

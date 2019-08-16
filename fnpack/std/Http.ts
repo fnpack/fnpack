@@ -14,13 +14,13 @@ export class Http extends SyncEventStream {
         this.filter = filter;
     }
 
-    protected getReceptionChain (): CallChain {
+    getReceptionChain (): CallChain {
         return js(resolve(__dirname, './httpReception.js'), 'http', true);
     }
 
     private filter: HttpFilter;
 
-    static get (path: String): SyncEventStream {
+    static get (path: String): Http {
         return new Http({ method: 'get', path: path });
     }
 

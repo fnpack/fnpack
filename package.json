@@ -22,6 +22,7 @@
     "fs-extra": "^8.1.0",
     "js-yaml": "^3.13.1",
     "serverless": "^1.50.0",
+    "serverless-offline": "^5.10.1",
     "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6"
   }
