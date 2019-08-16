@@ -57,7 +57,9 @@ export class CallChain {
 
     concat (chain: CallChain): CallChain {
         this.links = this.links.concat(chain.links);
-        this.name = chain.name;
+        if (chain.name !== undefined) {
+            this.name = chain.name;
+        }
         return this;
     }
 }
