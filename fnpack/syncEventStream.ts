@@ -7,14 +7,20 @@ export abstract class SyncEventStream extends EventStream {
         const rightHandChain: CallChain = typeof callable === 'function'
             ? new CallChain([new Lambda(callable)])
             : callable;
-        return new Member(this, this.getReceptionChain().concat(rightHandChain));
+        const receptionChain = this.getReceptionChain();
+        const joinedChain = receptionChain.concat(rightHandChain);
+        joinedChain.offset = receptionChain.links.length;
+        return new Member(this, joinedChain);
     }
 
     public serve (callable: string|StaticFile): Member {
         const rightHandChain: CallChain = typeof callable === 'string'
             ? new CallChain([new Constant(callable)])
             : new CallChain([callable]);
-        return new Member(this, this.getReceptionChain().concat(rightHandChain));
+        const receptionChain = this.getReceptionChain();
+        const joinedChain = receptionChain.concat(rightHandChain);
+        joinedChain.offset = receptionChain.links.length;
+        return new Member(this, joinedChain);
     }
 
     protected abstract getReceptionChain(): CallChain;

@@ -4,12 +4,16 @@ exports.handler = async function (event, context) {
     if (chain === undefined) {
         throw new Error('Could not identify chain for event');
     }
-    return zipChain(chain)(event);
+    try {
+        return zipChain(chain)(event);
+    } catch (e) {
+        return e;
+    }
 }
 
 exports.resolver = function (chainName) {
     if (chains[chainName] !== undefined) {
-        return zipChain(chains[chainName]);
+        return zipChain(chains[chainName].slice(chainOffsets[chainName] - 1));
     }
     throw new Error(`Could not resolve call chain named ${chainName}.`)
 }

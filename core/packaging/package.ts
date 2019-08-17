@@ -25,6 +25,13 @@ const chains = {
         .join(',\n')}
 };
 `;
+
+        const chainOffsets = `
+const chainOffsets = {
+    ${member.chains.map(chain => `${chain.name}: ${chain.offset}`).join(',\n')}
+};
+`;
+
         const environment = `
 const environment = {
     ${namedCallableFiles
@@ -43,7 +50,7 @@ const tests = [
 ];
 `
 
-        const importHead = environment + chainDictionary + tests;
+        const importHead = environment + chainDictionary + chainOffsets + tests;
 
         await writeTo(
             importHead + await read(handlerPath),

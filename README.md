@@ -12,7 +12,7 @@
             - [X] Middleware propagation
             - [X] Pipe propagation
         - [ ] Stack trace & Errors
-    - [-] FFI works for arbitrary Event Source
+    - [X] FFI works for arbitrary Event Source
 
 ## Static files
     - [ ] pick up and bundle
@@ -30,12 +30,12 @@
         - [ ] RUST
         - [ ] JAVA
         - [ ] Injection of environment variables
-        - [ ] Custom exports
+        - [X] Custom exports
     - [ ] Packages / multi-file artifacts
         - [X] Package using build step (webpack?)
         - [ ] Injection of environment variables
     - [ ] Code can import/resolve other modules within scope
-    - [ ] Call chains in front-end
+    - [X] Call chains in front-end
 
 ## Permissions
     - [ ] Scope
@@ -46,7 +46,7 @@
         - [ ] Role injection (connection to DB, etc.)
 
 ## Bundles
-    - [ ] Collapse scope (co-locate on lambdas)
+    - [X] Collapse scope (co-locate on lambdas)
     - [X] Service name / name bundle
     - [X] Wrap user code in runtime bundle
     - [ ] Portable
@@ -57,7 +57,7 @@
         - [X] LOCAL
     - [ ] Import SF apps
     - [X] Multiple members
-    - [-] Named function members
+    - [X] Named function members
     - [ ] Variables
     - [ ] Dependency injection
     - [X] Package into zip file

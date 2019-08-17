@@ -48,6 +48,7 @@ export class CallableFile implements Callable, CodeCallable {
 }
 
 export class CallChain {
+    public offset: number = 0;
     constructor(public links: Callable[], public name: string = undefined) {}
 
     as (name: string): CallChain {

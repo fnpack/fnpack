@@ -40,13 +40,25 @@ import { Time } from './fnpack/std/Time'
 //     ]
 // }
 
+// export const bundle: ServiceBundle = {
+//     name: 'resolver',
+//     members: [
+//         Web.get('/').call(fn(async () => {
+//             return 'foo'
+//         })),
+//         Time.interval('*/5 * * * ? *')
+//             .call(() => console.log('foobar')).as('mything')
+//     ]
+// }
+
 export const bundle: ServiceBundle = {
     name: 'resolver',
     members: [
-        Web.get('/').call(fn(async () => {
-            return 'foo'
-        })),
-        Time.interval('*/5 * * * ? *')
-            .call(() => console.log('foobar')).as('mything')
+        Web.get('/foo').call(fn(() => 'foo')).as('foo'),
+        Web.get('/fooRemote').call(fn(() => {
+            const { resolver } = require('fnpack');
+            const x = resolver('foo');
+            return x();
+        }))
     ]
 }

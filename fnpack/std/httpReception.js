@@ -7,7 +7,7 @@ exports.http = async (e, next) => {
       headers: e.headers
     });
 
-    const contentType = (res.headers|| {})["Content-Type"];
+    const contentType = (res.headers|| {})["Content-Type"] || 'application/json';
     var body = contentType === 'application/json'
       ? JSON.stringify(res.body)
       : res.body;

@@ -7,7 +7,10 @@ export abstract class AsyncEventStream extends EventStream {
         const rightHandChain: CallChain = typeof callable === 'function'
             ? new CallChain([new Lambda(callable)])
             : callable;
-        return new Member(this, this.getReceptionChain().concat(rightHandChain));
+        const receptionChain = this.getReceptionChain();
+        const joinedChain = receptionChain.concat(rightHandChain);
+        joinedChain.offset = receptionChain.links.length;
+        return new Member(this, joinedChain);
     }
 
     protected getReceptionChain(): CallChain {
