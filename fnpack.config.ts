@@ -18,20 +18,20 @@ import { Time } from './fnpack/std/Time'
 //                 body: `Hello ${new Date()}, this is the future talking`
 //             }
 //         }),
-//         Time.interval('*/5 * * * ? *')
-//             .call(() => console.log('foobar')).as('mything')
+        // Time.interval('*/5 * * * ? *')
+        //     .call(() => console.log('foobar')).as('mything')
 //     ]
 // };
 
-const id = fn(x => x).as('identity')
+// const id = fn(x => x).as('identity')
 
-export const bundle: ServiceBundle = {
-    name: 'resolver',
-    members: [
-        Http.get('/').call(id),
-        Http.get('/constant').call(() => 'blah')
-    ]
-}
+// export const bundle: ServiceBundle = {
+//     name: 'resolver',
+//     members: [
+//         Http.get('/').call(id),
+//         Http.get('/constant').call(() => {return {body: 'blah'}})
+//     ]
+// }
 
 // export const bundle: ServiceBundle = {
 //     name: 'resolver',
@@ -40,11 +40,13 @@ export const bundle: ServiceBundle = {
 //     ]
 // }
 
-// export const bundle: ServiceBundle = {
-//     name: 'resolver',
-//     members: [
-//         Web.get('/').call(fn(async () => {
-//             return 'foo'
-//         }))
-//     ]
-// }
+export const bundle: ServiceBundle = {
+    name: 'resolver',
+    members: [
+        Web.get('/').call(fn(async () => {
+            return 'foo'
+        })),
+        Time.interval('*/5 * * * ? *')
+            .call(() => console.log('foobar')).as('mything')
+    ]
+}

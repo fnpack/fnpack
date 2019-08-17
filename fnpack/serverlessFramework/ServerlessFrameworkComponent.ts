@@ -54,24 +54,30 @@ export function mergeComponents (
     };
 }
 
-function mergeObjects (L: Object, R: Object, replacements: {[key:string]: string}): Object {
-    Object.keys(R)
-        .forEach(rKey => {
-            const assignKey = replacements[rKey] || rKey;
-            if (L[rKey] === undefined) {
-                L[rKey] = R[rKey];
+export function mergeObjects (L: any, R: any, replacements: {[key:string]: string}): Object {
+    if (Array.isArray(L)) {
+        return L.concat(R);
+    }
+    if (typeof L === 'object') {
+        const merged = {};
+        Object.keys(L).forEach(lKey => {
+            const assignKey = replacements[lKey] || lKey;
+            if (R[lKey] === undefined) {
+                merged[assignKey] = L[lKey];
             } else {
-                if (typeof L[rKey] === 'object') {
-                    L[assignKey] = mergeObjects(L[rKey], R[rKey], replacements);
-                } else if (Array.isArray(L[rKey])) {
-                    L[assignKey] = L[rKey].concat(R[rKey]);
-                } else {
-                    L[assignKey] = R[rKey];
-                }
+                merged[assignKey] = mergeObjects(L[lKey], R[lKey], replacements)
             }
-            if (assignKey !== rKey) {
-                delete L[rKey];
+        })
+        Object.keys(R).forEach(rKey => {
+            const assignKey = replacements[rKey] || rKey;
+            if (L[assignKey] === undefined && L[rKey] === undefined) {
+                merged[assignKey] = R[rKey];
+            } else if (L[rKey] === undefined) {
+                merged[assignKey] = mergeObjects(L[assignKey], R[rKey], replacements);
             }
-        });
-    return L;
+        })
+        return merged;
+    } else {
+        return R;
+    }
 }

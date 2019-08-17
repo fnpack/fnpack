@@ -2,11 +2,9 @@ import { PackedMember } from './packedMember'
 import { CallableFile, Callable } from "../../fnpack/callChain";
 import { ColocatedMember } from '../colocation/collapse'
 import { CallableWriterFactory } from '../callables/callableWriter';
-// import { EventStream } from '../../fnpack/eventStream';
 import * as stdPath from 'path';
 const handlerPath = stdPath.resolve(__dirname, '../runtime/handler.js');
 import { writeTo, read } from '../../util/fileUtils';
-// import { nameHash } from '../../util/hashing';
 import { zip } from '../../util/zip';
 //this is only happy if we require webpack
 const webpack = require('webpack');
@@ -46,7 +44,6 @@ const tests = [
 `
 
         const importHead = environment + chainDictionary + tests;
-        console.log(importHead)
 
         await writeTo(
             importHead + await read(handlerPath),
@@ -113,7 +110,8 @@ async function executeWebpack (normalizedMembers: string[], buildDirLocation: st
                     new webpack.NormalModuleReplacementPlugin(
                         /^fnpack$/,
                         handler
-                      )
+                    ),
+                    new webpack.IgnorePlugin(/aws-sdk/)
                 ]
             }).run((err, stats) => {
                 if (err) reject(err);

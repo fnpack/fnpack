@@ -63,7 +63,7 @@ async function getTest (member: Member, buildDir: string): Promise<CallableFile>
     const testFileString: string = `
 const config = JSON.parse('${JSON.stringify(config)}');
 exports.default = function (event) {
-    if (test(event, config) !== undefined) {
+    if (test(event, config)) {
         return '${member.chain.name}';
     }
     return false;

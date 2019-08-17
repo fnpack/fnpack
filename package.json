@@ -4,7 +4,7 @@
   "description": "## Event Sources     - [ ] Async         - [x] Expressable in the frontend         - [ ] Use SNS for event propagation         - [ ] Connects to code artifacts         - [ ] Errors via dead letter queue     - [ ] Sync         - [x] Expressable in the frontend         - [ ] Event propagates through code             - [ ] Middleware propagation             - [ ] Pipe propagation         - [ ] Stack trace & Errors     - [ ] FFI works for arbitrary Event Source",
   "main": "hw.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-node testHarness.ts"
   },
   "repository": {
     "type": "git",

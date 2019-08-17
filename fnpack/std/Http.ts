@@ -14,9 +14,11 @@ export class Http extends SyncEventStream implements Colocatable {
         super();
     }
 
+    // todo: this will be different for each provider
     colocationTest = {
         test: (event: any, config: any): boolean => {
-            return event.method === config.method
+            return event.httpMethod.toLowerCase() === config.method.toLowerCase()
+                // todo: get more sophisticated with matches
                 && event.path === config.path
         },
         getConfig: (): any => this.filter

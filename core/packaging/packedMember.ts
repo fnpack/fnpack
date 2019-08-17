@@ -15,7 +15,7 @@ export class PackedMember extends ServerlessFrameworkComponent {
         }
         return this.streams 
             .reduce((merged, stream) => {
-                return mergeComponents(stream, merged, replacements);
+                return mergeComponents(merged, stream, replacements);
             }, this.functionComponent)
             .getFragment();
     }

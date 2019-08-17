@@ -18,7 +18,7 @@ function electChain (event) {
     let targetChainName, i = 0;
     for(; i < tests.length; i++) {
         targetChainName = tests[i](event);
-        if (targetChainName !== undefined) {
+        if (typeof targetChainName === 'string') {
             return chains[targetChainName];
         }
     }
