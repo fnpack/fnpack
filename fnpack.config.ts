@@ -3,23 +3,42 @@ import { js } from "./fnpack/loaders/js";
 import { fn } from './fnpack/loaders/fn';
 import { ServiceBundle } from './fnpack/fnpack';
 import { Http } from "./fnpack/std/Http";
+import { CallChain } from './fnpack/callChain'
 import { Web } from "./fnpack/std/Web";
 import { Time } from './fnpack/std/Time'
 
 
+
+// import { OAuth } from 'fnpack-oauth';
+
+// const oAuth = new OAuth({ secret: "<<<<>>>>", provider: "google" });
+// const authorizer: CallChain = oAuth.authorizer;
+
+// const protect = (callChain: CallChain): CallChain {
+//     return authorizer.concat(callChain);
+// }
+
+// export const bundle: ServiceBundle = {
+//     name: "Auth Protected",
+//     members: [
+//         Http.get('/authCallback').call(oAuth.callback),
+//         Http.get('/api/foo').call(protect(js('fooApi.js')))
+//     ]
+// }
+
 // export const bundle: ServiceBundle = {
 //     name: 'testerino',
 //     members: [
-//         // Http.get('/').serve(file('./site.html')),
-//         // Http.get('/hw').serve("Hello world!"),
-//         // Http.get('/api/hw').call(js('./hw.js')),
+//         Http.get('/').serve('./site.html'),
+//         Http.get('/hw').serve("Hello world!"),
+//         Http.get('/api/hw').call(js('./hw.js')),
 //         Http.get('/api/lambda').call(() => {
 //             return {
 //                 body: `Hello ${new Date()}, this is the future talking`
 //             }
 //         }),
-        // Time.interval('*/5 * * * ? *')
-        //     .call(() => console.log('foobar')).as('mything')
+//         Time.interval('*/5 * * * ? *')
+//             .call(() => console.log('foobar')).as('timer')
 //     ]
 // };
 
@@ -51,14 +70,14 @@ import { Time } from './fnpack/std/Time'
 //     ]
 // }
 
-export const bundle: ServiceBundle = {
-    name: 'resolver',
-    members: [
-        Web.get('/foo').call(fn(() => 'foo')).as('foo'),
-        Web.get('/fooRemote').call(fn(() => {
-            const { resolver } = require('fnpack');
-            const x = resolver('foo');
-            return x();
-        }))
-    ]
-}
+// export const bundle: ServiceBundle = {
+//     name: 'resolver',
+//     members: [
+//         Web.get('/foo').call(fn(() => 'foo')).as('foo'),
+//         Web.get('/fooRemote').call(fn(() => {
+//             const { resolver } = require('fnpack');
+//             const x = resolver('foo');
+//             return x();
+//         }))
+//     ]
+// }

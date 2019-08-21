@@ -1,3 +1,6 @@
+# fnPack is a rebrand of the Strat Coordination Language: https://strat.world
+
+
 # Feature check-list
 
 ## Event Sources
@@ -72,6 +75,10 @@
         - [ ] Receive ranged calls
         - [X] Call local code
     - [ ] IPC bridge for non-js code packages
+
+## Deployment
+    - [ ] Logging
+    - [ ] Debugging
 
 ## std
     - [ ] Http
