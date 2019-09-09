@@ -50,6 +50,7 @@ function getName (chains: CallChain[]): string {
 }
 
 //code gen something that can be called at runtime to test if the thing works
+// this writes out a file that's called to test if a given call chain should be called
 async function getTest (member: Member, buildDir: string): Promise<CallableFile> {
     //test if its colocatable, else get the default callable file
     if (typeof member.stream['colocationTest'] !== 'object') {

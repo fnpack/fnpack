@@ -8,6 +8,20 @@ import { Web } from "./fnpack/std/Web";
 import { Time } from './fnpack/std/Time'
 
 
+// import { welcomeService } from './userWelcomeService'
+// import { Service } from 'fnpack-passport'
+// import { DynamoReads } from 'fnpack-dynamo'
+
+// const readStream = new DynamoReads({ table: 'foo' });
+
+// export const bundle {
+//     name: "MyService",
+//     members: [
+//         Service.bundle, //a bundle
+//         readStream.call(welcomeService)
+//     ]
+// }
+
 
 // import { OAuth } from 'fnpack-oauth';
 
@@ -42,20 +56,20 @@ import { Time } from './fnpack/std/Time'
 //     ]
 // };
 
-// const id = fn(x => x).as('identity')
+const id = fn(x => x).as('identity')
+
+export const bundle: ServiceBundle = {
+    name: 'resolver',
+    members: [
+        Http.get('/').call(id),
+        Http.get('/constant').call(() => {return {body: 'blah'}})
+    ]
+}
 
 // export const bundle: ServiceBundle = {
 //     name: 'resolver',
 //     members: [
-//         Http.get('/').call(id),
-//         Http.get('/constant').call(() => {return {body: 'blah'}})
-//     ]
-// }
-
-// export const bundle: ServiceBundle = {
-//     name: 'resolver',
-//     members: [
-//         Web.get('/').call(js('./test1.js'))
+//         Web.get('/').call(js('./test1.js')).with(DDBWriteTo("foobar"))
 //     ]
 // }
 
